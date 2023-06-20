@@ -4,26 +4,37 @@ var axios = require("axios")
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  var data = new Date().toISOString().substring(0, 16)
-  axios.get("http://localhost:7777/api/")
+  axios.get("http://localhost:16016/consultas")
     .then(dados=>{
-      res.render('listaDB', { exames: dados.data });
+      res.render('listaDB', { tratamentos: dados.data });
     })
     .catch(erro=>{
     
-      res.render('error', { error: erro,message:"Erro a obter lista de exames" });
+      res.render('error', { error: erro,message:"Erro a obter lista de tratamentos" });
     })
 });
 
-router.get('/exames/:id', function(req, res, next) {
-  var data = new Date().toISOString().substring(0, 16)
-  axios.get("http://localhost:7777/api/emd/"+req.params.id)
+
+
+router.get('/intervencoes/:id', function(req, res, next) {
+  axios.get("http://localhost:16016/consultas")
+    .then(dados=>{
+      res.render('intervencoes', { tratamentos: dados.data,code:req.params.id });
+    })
+    .catch(erro=>{
+    
+      res.render('error', { error: erro,message:"Erro a obter lista de tratamentos" });
+    })
+});
+
+router.get('/:id', function(req, res, next) {
+  axios.get("http://localhost:16016/consultas/"+req.params.id)
       .then(dados=>{
         //console.log(JSON.stringify(dados))
-        res.render('perfil', { exame: dados.data });
+        res.render('perfil', { tratamento: dados.data });
       })
       .catch(erro=>{
-    
+      res.render('error', { error: erro,message:"Erro a obter lista de exames" });
       })
 
   
